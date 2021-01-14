@@ -1,0 +1,13 @@
+<script type="text/javascript">
+
+	function copyToClipboard(element) {
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($(element).html()).select();
+				document.execCommand("copy");
+				$temp.remove();
+	}
+	var listFile = <%- JSON.stringify(listFile); %>;
+	console.log(listFile);
+	var user = <%- JSON.stringify(user); %>;
+</script>

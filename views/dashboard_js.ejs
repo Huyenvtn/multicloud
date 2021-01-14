@@ -1,0 +1,27 @@
+<script type="text/javascript">
+	<% if (filter) { %>
+		<% if (filter.startDate) { %>
+				var categoryFilter = "<%= filter.categoryFilter %>"
+				$("#category_filter").val(categoryFilter);
+		<% } %>
+		<% if (filter.sortByName) { %>
+				$( "#<%= filter.sortByName %>").prop( "checked", true );
+		<% } %>
+		<% if (filter.accountFilter) { %>
+			var accountFilter = "<%= filter.accountFilter %>".split(",");
+			$.each(accountFilter, function(i,e){
+    			$("#chooseAccountfilter option[value='" + e + "']").prop("selected", true);
+			});
+		<% } %>
+	<% } %>
+	function copyToClipboard(element) {
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($(element).html()).select();
+				document.execCommand("copy");
+				$temp.remove();
+	}
+	var listFile = <%- JSON.stringify(listFile); %>;
+	console.log(listFile);
+	var user = <%- JSON.stringify(user); %>;
+</script>

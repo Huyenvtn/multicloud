@@ -1,0 +1,40 @@
+const express = require('express');
+const {google} = require('googleapis'); 
+var dashboardController= require('../controllers/dashboard.controller');
+var googleController= require('../controllers/google.controller');
+var onedriveController= require('../controllers/oneDrive.controller');
+var dropboxController= require('../controllers/dropbox.controller');var auth = require('../middlewares/auth.middle');
+const fs = require('fs');
+var async = require("async");
+
+var router = express.Router();
+
+router.get('/', dashboardController.dashboard);
+router.post('/:driveType/upload/:folderId/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.upload);
+router.post('/:driveType/upload/:index/', auth.isLoggedIn, dashboardController.upload);
+router.get('/:driveType/getMyDrive/:index/:render', auth.isLoggedIn, dashboardController.getMyDrive);
+router.get('/:driveType/getMyDrive/:driveID/:token/:refreshToken/:render', auth.isLoggedIn, dashboardController.getMyDrive);
+router.get('/:driveType/getAllFiles/:index', auth.isLoggedIn, dashboardController.getAllFiles);
+router.get('/:driveType/getAllByParentName/:parentID/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.getAllByParentName);
+router.get('/:driveType/getFileOfFolder/:folderID/:driveID/:token/:refreshToken/:render', auth.isLoggedIn, dashboardController.getFileOfFolder);
+router.get('/:driveType/getFileByID/:fileID/:token/:refreshToken', auth.isLoggedIn, dashboardController.getFileByID);
+router.get('/:driveType/getFileShareWithMe/:index', auth.isLoggedIn, dashboardController.getFileShareWithMe);
+router.get('/:driveType/getFileShareWithMe/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.getFileShareWithMe);
+router.get('/:driveType/getShareWithMeByParentsID/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.getShareWithMeByParentsID);
+router.post('/:driveType/addPermissionFileShare/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.addPermissionFileShare);
+router.get('/:driveType/download/:name/:id/:mimeType/:token/:refreshToken', auth.isLoggedIn, dashboardController.download);
+router.post('/:driveType/createFolder/:parents/:index', auth.isLoggedIn, dashboardController.createFolder);
+router.post('/:driveType/createFolder/:parents/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.createFolder);
+router.get('/:driveType/moveBetweenOneAccount/:id/:folderHeadID/:folderDestinationID/:token/:refreshToken', auth.isLoggedIn, dashboardController.moveBetweenOneAccount);
+router.get('/:driveType/copyBetweenOneAccount/:id/:folderHeadID/:folderDestinationID/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.copyBetweenOneAccount);
+router.get('/moveBetweenDifferentAccount/:name/:mimeType/:id/:driveTypeHead/:headToken/:headRefreshToken/:driveTypeDestination/:folderDestinationID/:driveDestinationID/:destinationToken/:destinationRefreshToken', auth.isLoggedIn, dashboardController.moveBetweenDifferentAccount);
+router.get('/copyBetweenDifferentAccount/:name/:mimeType/:id/:driveTypeHead/:headToken/:headRefreshToken/:driveTypeDestination/:folderDestinationID/:driveDestinationID/:destinationToken/:destinationRefreshToken', auth.isLoggedIn, dashboardController.copyBetweenDifferentAccount);
+router.post('/:driveType/rename/:id/:token/:refreshToken', auth.isLoggedIn, dashboardController.rename);
+router.get('/:driveType/duplicate/:id/:driveID/:token/:refreshToken', auth.isLoggedIn, dashboardController.duplicate);
+router.get('/:driveType/delete/:id/:token/:refreshToken', auth.isLoggedIn, dashboardController.delete);
+router.get('/searchFileByName', auth.isLoggedIn, dashboardController.searchFileByName);
+router.get('/advancedFiltering', auth.isLoggedIn, dashboardController.advancedFiltering);
+router.post('/sendMailShareLink', auth.isLoggedIn, dashboardController.sendMailShareLink);
+router.post('/editProfileLocalAccount', auth.isLoggedIn, dashboardController.editProfileLocalAccount);
+
+module.exports = router;

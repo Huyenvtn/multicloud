@@ -1,0 +1,128 @@
+<nav id="header" class="header-light header-fixed header-shadow-1"  style=" font-family: 'Lucida Sans Unicode'; font-weight: 500;">
+
+    <div class="header-db" style="margin-bottom: 10px;">
+        <div style="background-color: rgb(255 255 255);;  padding-bottom: 10px; padding-top: 5px;">
+
+    <!-- MOBILE : NAVIGATION TOGGLE -->
+        <button class="nav-toggle"></button>
+
+    <!--LOGO -->
+        <a class="header-logo shadow margin-top-10" href="/dashboard">
+            <img src="assets/images/cloudinone/logo1.png" height="60" alt="">
+        </a>
+
+    <!--+ LAYOUT my account-->
+        <ul class="list-inline header-buttons"> 
+      
+        <li class="list-inline-item header-button-arrow shadow">
+            <a href="#" style="font-size: medium;color: #1f89b1;" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown"> <i class="fa fa-user-circle" ></i> <%= user.local.name %></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <span><i class="fa fa-user"></i> <%= user.local.name %></span>
+                <h4 class="size-13 weight-400 mb-10">&ensp; Welcome to CloudInOne!</h4>
+                <hr>
+        <a class="dropdown-item"  onclick="document.getElementById('detailAccountCloud').style.display='block'">Account Settings</a>
+                <a class="dropdown-item dropdown-custom-icon dropdown-myaccount-logout" href="/logout">
+                    <i class="fa fa-power-off"></i> 
+                    <b>Log Out</b>
+                </a>
+            </div>
+        </li>
+        </ul>
+    <!--+ Tìm kiếm-->
+    <form action="/dashboard/searchFileByName" method="get" class="search-global hidden-sm-down">
+        <input type="text" style="background-color: #f5fcff!important;"name="searchName" class="form-control" placeholder="Search in CloudInOne ...">
+        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+    </form>
+
+<!-- ba gạch mobile -->
+    <nav class="main-nav main-nav-toggle">
+
+<!--list  mobile-->
+        <div class="main-nav-mobile-scroll " style="overflow-y: scroll;">
+            <ul class="list-unstyled mb-0">
+                <li class="margin-top-20 ">
+                    <b>&nbsp;<span>CLOUD ACCOUNT</span></b>
+                </li>
+
+                <li class="main-nav-item margin-top-10">
+                    <a onclick="document.getElementById('idtype').style.display='block'"  style="width: 80%; margin-left: 10%;" class="btn btn-success">
+                        <span class="ico-transparent ico-hover fa fa-plus-circle et-cloud"></span> Add Account 
+                    </a>
+                </li>
+                
+                <!-- Local Account Access 
+                <li>
+                    <div class="side-nav margin-bottom-30 ">
+                        <h4>&nbsp;<span class="fa fa-user"></span> Local</h4>
+                        <ul class="list-group list-unstyled well">
+                            <li style= "word-wrap:break-word;"><strong>email</strong>: <%= user.local.email %></li>
+                            <li><strong>name</strong>: <%= user.local.name %></li>
+                        </ul>                  
+                    </div>
+                </li>-->
+
+                
+                <!-- Google Account Access -->
+                <li>				 
+                    <div class="side-nav margin-bottom-30 ">
+                        <h4>&nbsp;<span class="fa fa-google-plus"></span> Google</h4>
+                    
+                        <% if (user.google.length) { %>          
+                            <% for(var i = 0; i < user.google.length; i++) { %>
+                                
+                                <ul class="list-group list-unstyled well ">
+                                    <li style= "word-wrap:break-word;"><strong>email</strong>: <%= user.google[i].email %></li>
+                                    <li><strong>name</strong>: <%= user.google[i].name %></li>
+                                </ul>
+                            
+                            <% } %>
+                        <% } %>
+                    </div>
+                </li>
+
+                <!-- OneDrive Account Access -->
+                <li>
+                    <div class="side-nav margin-bottom-30 ">
+                        <h4>&nbsp;<span class="fa fa-windows"></span> OneDrive</h4>
+                    
+                        <% if (user.onedrive.length) { %>          
+                            <% for(var i = 0; i < user.onedrive.length; i++) { %>
+                                <ul class="list-group list-unstyled well" id="onedrive" value="<%= i %>">
+                                    <li><strong>name</strong>: <%= user.onedrive[i].name %></li>
+                                    <li style= "word-wrap:break-word;"><strong>email</strong>: <%= user.onedrive[i].email %></li>
+                                </ul>
+                            <% } %>
+                        <% } %>
+                    </div>
+                </li>
+          
+                <!--Dropbox account-->
+                <li>
+                    <div class="side-nav margin-bottom-30 ">
+                        <h4>&nbsp;<span class="fa fa-dropbox"></span> Dropbox</h4>
+                        <% if (user.dropbox.length) { %>          
+                            <% for(var i = 0; i < user.dropbox.length; i++) { %>
+                                <ul class="list-group list-unstyled well ">
+                                    <li><strong>name</strong>: <%= user.dropbox[i].name %></li>
+                                    <li style= "word-wrap:break-word;"><strong>email</strong>: <%= user.dropbox[i].email %> </li>
+                                    
+                                </ul>
+                                <% } %>
+                        <% } %>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- nav2 -->
+   
+    <!-- LIST OPTIONS -->
+  
+        </div>
+    </div>
+
+</nav>
+<!-- /HEADER -->
+<!-- /PAGE HEADER -->

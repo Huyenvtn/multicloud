@@ -1,0 +1,436 @@
+<!-- RIGHT ACCOUNT CLICK -->
+					
+		<div class="context-menu" id="context-menu-drive" style="display:none;position:absolute;z-index:99; ">
+			<ul>
+				<li><a id="upload" style="width:auto;"><i class="fa fa-upload"></i> Upload</a></li> 
+				<li><a id="remove"><i class="fa fa-trash"></i> Remove</a></li>   
+				<li><a id="getAllFiles"><i class="fa fa-files-o"></i>  All Files</a></li> 
+				<li><a id="getMyDrive"><i class="fa fa-cloud"></i> My Drive</a></li> 
+				<li><a id="getShareWithMe"><i class="fa fa-share-alt"></i> Share With Me</a></li> 
+				<li><a id="createFolder"><i class="fa fa-plus"></i> Create Folder</a></li>           
+				<li><a id="properties" onclick="document.getElementById('idcloudtype').style.display='block'" style="width:auto;"><i class="fa fa-info-circle"></i> Detail</a></li>             
+			</ul>
+		</div>
+
+<!-- /RIGHT ACCOUNT CLICK -->
+
+<!--REMOVE MODAL-->
+<div id="remove-alert" class="modal">
+
+	<form class="modal-content animate" method="post" enctype="multipart/form-data">
+			
+			<div class="modal-header" >
+				<h3 style="text-align: center;" class="modal-title">REMOVE ACCOUNT</h3>
+				<span onclick="document.getElementById('remove-alert').style.display='none'" class="close shadow" title="Close ">&times;</span>
+			</div>
+
+			<div class="modal-body">
+				<label>Are you sure to remove this file ? It cannot restore after remove them !</label>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn btn-success shadow" type="submit">Comfirm</button>	
+				<button onclick="document.getElementById('remove-alert').style.display='none'" class="btn cancelbtn shadow">Cancel</button>	
+			
+			</div>
+
+</form>
+</div>
+<!--/REMOVE MODAL-->
+
+<!-- MODAL SHARE -->
+<div id="share-modal" class="modal">
+
+	<form class="modal-content animate" id="sendMailLinkShare" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	Share with email</h3>	
+			<span onclick="document.getElementById('share-modal').style.display='none'" class="close shadow" title="Close Upload">&times;</span>
+		</div>
+		
+		<div class="modal-body" style="padding-bottom: 20px; ">
+			<label for="fname">Email: </label>
+			<input type="text" id="emailShareTo" name="firstname" placeholder="Enter email to share.." style="width: 60%; ">
+			<select id="chooseTypeShare" style="float: right;" class="shadow">
+				<option value="reader">Reader</option>
+				<option value="writer">Writer</option>
+			</select>
+		</div>
+	<!-- <div>
+		<input type="checkbox">
+		<textarea id="descriptionmail" name="#" rows="4" cols="50" placeholder="Enter a message.." style="width: 100%; "></textarea>
+	</div>	 -->
+		<!--nội dung-->
+		<div class="modal-footer">
+			<button id= "btnSendMailLinkShare" class="btn btn-success okbtn shadow" type="submit" >Share link </button>	
+			<button id= "btnSendMailFileShare" class="btn btn-success okbtn shadow" type="submit" >Share File</button>	
+		</div>
+	</form>
+
+	<form class="modal-content animate" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title shadow">Get link</h3>
+		</div>	
+		
+		<div class="modal-body">
+			<label id="lablePermission"></label>
+			<br>
+			<div>
+				<label style="color: red; word-wrap:break-word; font-weight: 500!important; width: 70%;"><a id="textLinkShare" ></a></label>
+				<span style="float: right; color: blue; margin-top: 20px;" >
+					<button onclick="event.preventDefault(); copyToClipboard('#textLinkShare') "class="shadowt">Copy to clipboard</button>
+				</span>
+			</div>
+		</div>
+	</form>
+</div>
+<!-- /MODAL SHARE -->
+
+<!-- MODAL UPLOAD -->
+<div id="upload-modal" class="modal">
+
+	<form class="modal-content animate upload-Files" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">UPLOAD DATA</h3>
+			<span onclick="document.getElementById('upload-modal').style.display='none'" class="close shadow" title="Close Upload">&times;</span>
+		</div>	
+
+		<div class="modal-body">
+			Upload file: <input type="file" multiple required name="file_upload" style="width: 100%;">
+			Upload folder: <input type="file" name="folder_upload" style="width: 100%;" webkitdirectory mozdirectory msdirectory odirectory directory />
+		</div>			
+		
+		<div class="modal-footer">
+			<button style="width: 100% " class="btn btn-success shadow" type="submit">Upload</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL UPLOAD -->
+
+<!-- MODAL RENAME -->
+<div id="rename-modal" class="modal">
+
+	<form class="modal-content animate rename-file-folder" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">RENAME</h3>	
+			<span onclick="document.getElementById('rename-modal').style.display='none'" class="close shadow" title="Close Upload">&times;</span>
+		</div>
+
+		<div class="modal-body">
+			<label for="newName" style=" font-weight: 600; font-size: medium; width: 30%;">New name: </label>
+			<input id="newName" style="width: 65%;" type="text" placeholder="Enter new name" name="newName" required>
+		</div>	
+		
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow" type="submit" >Rename</button>	
+			<button onclick="document.getElementById('rename-modal').style.display='none'" class="btn cancelbtn shadow">Cancel</button>	
+		</div>
+		
+	</form>
+</div>
+<!-- /MODAL RENAME -->
+
+<!-- MODAL CREATE FOLDER -->
+<div id="create-folder-modal" class="modal">
+	<form class="modal-content animate create-folder" method="post" enctype="multipart/form-data">
+		
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	NEW FOLDER</h3>
+			<span onclick="document.getElementById('create-folder-modal').style.display='none'" class="close shadow" title="Close Upload">&times;</span>
+		</div>	
+
+		<div class="modal-body">
+			<input type="text" placeholder="Enter new folder name" name="nameFolder" required>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow" >Create</button>	
+			<button onclick="document.getElementById('create-folder-modal').style.display='none'" class="btn cancelbtn shadow">Cancel</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL CREATE FOLDER -->
+
+<!-- MODAL lOCAL ACCOUNT DETAIL -->
+<div id="detailAccountCloud" class="modal">
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header">
+			<h3 style="text-align: center;" class="tmodal modal-title">	<i class="fa fa-users"></i> MY PROFILE</h3>
+			<span onclick="document.getElementById('detailAccountCloud').style.display='none'" class="close shadow" title="Close Detail">&times;</span>	
+		</div>
+		<div class="modal-body">
+			<table style=" border: 0; margin-left: 10%;">
+				<tr >
+					<td class="td-id " style="width: 45%" >Email </td>
+					<td class="td-name" id="local_acccount_email"><%= user.local.email %></td>
+				</tr>
+				<tr>
+					<td class="td-id"style="width: 45%" >Name </td>
+					<td class="td-name" id="local_acccount_name"><%= user.local.name %></td>
+				</tr>
+				<tr>
+					<td class="td-id"style="width: 40%">Phone Number </td>
+					<td class="td-name" id="local_acccount_phoneNumber"><%= user.local.phoneNumber %></td>
+				</tr>
+			</table>
+		</div>	
+
+		<div class="modal-footer">
+			<button type="button" onclick="event.preventDefault(); document.getElementById('edit-profileAccount-modal').style.display='block'" class="btn btn-success shadowBtn" style="min-width: 80px;">Edit</button>
+			<button type="button" onclick=" document.getElementById('detailAccountCloud').style.display='none'" class="btn cancelbtn shadow">Cancel</button>
+		</div>
+	</form>
+</div>
+<!-- /MODAL TYPE CLOUD DETAIL -->
+
+<!-- CUSTOMER PROFILE ACCOUNT MODAL -->
+<div id="edit-profileAccount-modal" class="modal">
+	<form class=" modal-content sky-form boxed animate" action="/dashboard/editProfileLocalAccount" method="post" enctype="multipart/form-data">
+		<header>
+			<h3 style="text-align: center;" class="tmodal" ><i class="fa fa-users"></i> EDIT PROFILE</h3>
+			<span onclick="document.getElementById('edit-profileAccount-modal').style.display='none'" class="close margin-top-20" title="Close Profile">&times;</span>
+		</header>
+	
+		<fieldset>					
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-envelope"></i>
+				<input type="text" name="email" value= <%= user.local.email %>>
+			</label>
+		
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-envelope"></i>
+				<input type="text" name="name" value=<%= user.local.name %>>
+				<b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+			</label>
+
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-lock"></i>
+				<input type="password" name="newPassword" placeholder="Enter new password" >
+				<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+			</label>
+	
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-lock"></i>
+				<input type="password" name="passwordConfirm" placeholder="Confirm new password" >
+				<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+			</label>
+
+			<label class="input margin-bottom-10">
+				<input type="text" id="#" name="phoneNumber" value=<%= user.local.phoneNumber %>>
+				<b class="tooltip tooltip-bottom-right">Only latin characters</b>
+			</label>
+	
+		</fieldset>
+	
+		<div>
+			<button class="btn btn-success okbtn shadow" >Save</button>	
+			<button type="button" onclick="document.getElementById('edit-profileAccount-modal').style.display='none'" class="btn cancelbtn shadow">Cancel</button>	
+		</div>
+	
+	</form>
+</div>
+<!-- /CUSTOMER PROFILE ACCOUNT MODAL -->
+
+<!-- MODAL CLOUD TYPE -->
+<div id="idtype" class="modal">
+	<form class="modal-content animate" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h4 style="text-align: center;" class="modal-title">CHOOSE CLOUD TYPE TO ADD ACCOUNT</h4>	
+			<span onclick="document.getElementById('idtype').style.display='none'" class="close" title="Close Upload">&times;</span>
+		</div>
+
+		<div style=" margin-left: auto; margin-right: auto;">
+			<div class="gallery shadow">
+				<a href="/auth/dropbox" >
+					<img class="img-responsive" src="assets/images/logo/dropbox.png" alt="Cinque Terre">
+				</a>
+				<h3 class="desc">Dropbox</h3>
+			</div>
+			
+			<div class="gallery shadow">
+				<a href="/auth/google">
+					<img class="img-responsive" src="assets/images/logo/googledrive.jpg" alt="Forest" >
+				</a>
+				<h3 class="desc">Google Drive</h3>
+			</div>
+			
+			<div class="gallery shadow">
+				<a href="/auth/onedrive">
+					<img class="img-responsive" src="assets/images/logo/onedrive.png" alt="Northern Lights">
+				</a>
+				<h3 class="desc">OneDrive</h3>
+			</div>
+		</div>	
+	</form>
+</div>
+<!-- /MODAL CLOUD TYPE -->
+
+<!-- MODAL FILE DETAIL -->
+<div id="iddetail" class="modal">
+
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	FILE DETAIL</h3> 
+			<span onclick="document.getElementById('iddetail').style.display='none'" class="close shadow" title="Close Detail">&times;</span>	
+		</div>
+
+		<div style="background-color:#f1f1f1; width: 100%; text-align: left;">
+			<h4 class="desc-left" id="file_name"></h4> 
+		</div>	
+		<table style=" border: 0; margin-left: 20%;">
+			<tr >
+				<td class="td-id " >Cloud Type</td>
+				<td class="td-name" id="file_cloud_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id">File Type</td>
+				<td class="td-name" id="file_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id">File Size</td>
+				<td class="td-name" id="file_size"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Location</td>
+				<td class="td-name" id="file_location"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Create Date</td>
+				<td class="td-name" id="file_create_date"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Modified Date</td>
+				<td class="td-name" id="file_modified_date"></td>
+			</tr>
+		</table>
+		<div>
+			<button type="button" onclick="document.getElementById('iddetail').style.display='none'" class="btn cancelbtn shadow">Cancel</button>
+		</div>
+	</form>
+	
+</div>
+<!-- /MODAL FILE DETAIL -->
+
+<!-- MODAL CLOUD TYPE DETAIL -->
+<div id="idcloudtype" class="modal">
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	ACCOUNT DETAIL</h3>
+			<span onclick="document.getElementById('idcloudtype').style.display='none'" class="close shadow" title="Close Detail">&times;</span>	
+		</div>
+		
+		<div style="background-color:#f1f1f1; width: 100%; text-align: left; padding-left: 10px;">
+			<h4 class="desc-left margin-left-50" id="cloud_email">Email tài khoản</h4>
+		</div>	
+		<table style=" border: 0; margin-left: 15%;">
+			<tr >
+				<td class="td-id " style="width: 40%" >Cloud Type </td>
+				<td class="td-name" id="cloud_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id" style="width: 40%">Total space free </td>
+				<td class="td-name" id="cloud_total_space"></td>
+			</tr>
+			<tr>
+				<td class="td-id" style="width: 40%">Used space</td>
+				<td class="td-name" id="cloud_used_space"></td>
+			</tr>
+		</table>
+		<div>
+			<button type="button" onclick="document.getElementById('idcloudtype').style.display='none'" class="btn cancelbtn shadow">Cancel</button>
+		</div>
+	</form>
+	
+</div>
+<!-- /MODAL TYPE CLOUD DETAIL -->
+
+<!-- MODAL MOVE -->
+<div id="listFolderMoveTo" class="modal">
+
+	<form class="modal-content animate moveToNewLocation" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	MOVE FILE</h3>	
+			<span onclick="document.getElementById('listFolderMoveTo').style.display='none'" class="close" title="Close move">&times;</span>		
+		</div>
+
+		<div class="modal-body" style="padding-bottom: 20px; ">
+				<label style="width: 35%;" for="fname">Choose Account Move To:</label>
+				<select style="width: 40%;" id="chooseAccountMoveTo" style="float: right; ">
+				<optgroup label="Google">
+					<% if (user.google.length > 0) { %>          
+						<% for(var i = 0; i < user.google.length; i++) { %>
+							<option class="google-drive" value="<%= user.google[i]._id %>"><%= user.google[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				<optgroup label="OneDrive">
+					<% if (user.onedrive.length > 0) { %>          
+						<% for(var i = 0; i < user.onedrive.length; i++) { %>
+							<option class="onedrive" value="<%= user.onedrive[i]._id %>"><%= user.onedrive[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				<optgroup label="Dropbox">
+					<% if (user.dropbox.length > 0) { %>          
+						<% for(var i = 0; i < user.dropbox.length; i++) { %>
+							<option class="dropbox" value="<%= user.dropbox[i]._id %>"><%= user.dropbox[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				</select>
+			<h2 id="currentFolderMove" style="position: relative; text-align: center; background-color:#f1f1f1;" class="tmodal">
+			</h2>
+			<a id="backDirectoryBeforeMove" href="#" style="position:absolute; left:0;" class="fa fa-arrow-left" aria-hidden="true"></a>
+			<div id="allFolderMoveTo" class="file-folder-container-mini"></div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn okbtn shadowBtn" >Move</button>	
+			<button onclick="document.getElementById('listFolderMoveTo').style.display='none'" class="btn cancelbtn shadow" type="button">Cancel</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL MOVE -->	
+
+<!-- MODAL COPY -->
+<div id="listFolderCopyTo" class="modal">
+
+	<form class="modal-content animate copyToNewLocation" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	COPY FILE</h3>	
+			<span onclick="document.getElementById('listFolderCopyTo').style.display='none'" class="close" title="Close copy">&times;</span>		
+		</div>
+
+		<div class="modal-body" style="padding-bottom: 20px; ">
+			<label style="width: 35%;" for="fname">Choose Account Copy To:</label>
+			<select style="width: 40%;" id="chooseAccountCopyTo" style="float: right; ">
+			<optgroup label="Google">
+				<% if (user.google.length > 0) { %>          
+					<% for(var i = 0; i < user.google.length; i++) { %>
+						<option class="google-drive" value="<%= user.google[i]._id %>"><%= user.google[i].email %></option>
+					<% } %>
+				<% } %>
+			</optgroup>
+			<optgroup label="OneDrive">
+				<% if (user.onedrive.length > 0) { %>          
+					<% for(var i = 0; i < user.onedrive.length; i++) { %>
+						<option class="onedrive" value="<%= user.onedrive[i]._id %>"><%= user.onedrive[i].email %></option>
+					<% } %>
+				<% } %>
+			</optgroup>
+			<optgroup label="Dropbox">
+			</optgroup>
+			</select>
+			
+			<h2 id="currentFolderCopy" style="position: relative; text-align: center; background-color:#f1f1f1;" class="tmodal">
+			</h2>
+			<a id="backDirectoryBeforeCopy" href="#" style="position:absolute; left:0;" class="fa fa-arrow-left" aria-hidden="true"></a>
+			<div id="allFolderCopyTo"  class="file-folder-container-mini"></div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn okbtn shadow">Copy</button>	
+			<button onclick="document.getElementById('listFolderCopyTo').style.display='none'" class="btn cancelbtn shadow" type="button">Cancel</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL COPY -->	

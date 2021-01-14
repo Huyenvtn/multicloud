@@ -1,0 +1,435 @@
+<!-- RIGHT ACCOUNT CLICK -->
+					
+		<div class="context-menu" id="context-menu-drive" style="display:none;position:absolute;z-index:99; ">
+			<ul>
+				<li><a id="upload" style="width:auto;"><i class="fa fa-upload"></i> Tải lên</a></li> 
+				<li><a id="remove"><i class="fa fa-trash"></i> Xoá</a></li>   
+				<li><a id="getAllFiles"><i class="fa fa-files-o"></i>  Tất cả tệp</a></li> 
+				<li><a id="getMyDrive"><i class="fa fa-cloud"></i> Drive của tôi</a></li> 
+				<li><a id="getShareWithMe"><i class="fa fa-share-alt"></i> Chia sẻ với tôi</a></li> 
+				<li><a id="createFolder"><i class="fa fa-plus"></i> Tạo thư mục</a></li>           
+				<li><a id="properties" onclick="document.getElementById('idcloudtype').style.display='block'" style="width:auto;"><i class="fa fa-info-circle"></i> Chi tiết</a></li>             
+			</ul>
+		</div>
+
+<!-- /RIGHT ACCOUNT CLICK -->
+
+<!--REMOVE MODAL-->
+<div id="remove-alert" class="modal">
+
+	<form class="modal-content animate" method="post" enctype="multipart/form-data">
+			
+			<div class="modal-header" >
+				<h3 style="text-align: center;" class="modal-title">XOÁ TÀI KHOẢN</h3>
+				<span onclick="document.getElementById('remove-alert').style.display='none'" class="close shadow" title="Đóng ">&times;</span>
+			</div>
+
+			<div class="modal-body">
+				<label>Bạn đã chắc chắn muốn xoá tài khoản này ?</label>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn btn-success shadow" type="submit">Xác nhận</button>	
+				<button onclick="document.getElementById('remove-alert').style.display='none'" class="btn cancelbtn shadow">Huỷ</button>	
+			
+			</div>
+
+</form>
+</div>
+<!--/REMOVE MODAL-->
+
+<!-- MODAL SHARE -->
+<div id="share-modal" class="modal">
+
+	<form class="modal-content animate" id="sendMailLinkShare" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title"> Chia sẻ qua email</h3>	
+			<span onclick="document.getElementById('share-modal').style.display='none'" class="close shadow" title="Đóng">&times;</span>
+		</div>
+		
+		<div class="modal-body" style="padding-bottom: 20px; ">
+			<label for="fname">Email: </label>
+			<input type="text" id="emailShareTo" name="firstname" placeholder="Nhập email muốn chia sẻ .." style="width: 60%; ">
+			<select id="chooseTypeShare" style="float: right;" class="shadow">
+				<option value="reader">Chỉ xem</option>
+				<option value="writer">Chỉnh sửa</option>
+			</select>
+		</div>
+	<!-- <div>
+		<input type="checkbox">
+		<textarea id="descriptionmail" name="#" rows="4" cols="50" placeholder="Enter a message.." style="width: 100%; "></textarea>
+	</div>	 -->
+		<!--nội dung-->
+		<div class="modal-footer">
+			<button id= "btnSendMailLinkShare" class="btn btn-success okbtn shadow" type="submit" >Chia sẻ</button>	
+			<button id= "btnSendMailFileShare" class="btn btn-success okbtn shadow" type="submit" >Chia sẻ tệp</button>
+		</div>
+	</form>
+
+	<form class="modal-content animate" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">Lấy đường dẫn</h3>
+		</div>	
+		
+		<div class="modal-body">
+			<label id="lablePermission"><b>Có thể đọc : </b> Bất cứ ai có đường dẫn này đều có thể đọc.</label>
+			<br>
+			<div>
+				<label style="color: red; word-wrap:break-word; font-weight: 500!important; width: 70%;"><a id="textLinkShare" ></a></label>
+				<span style="float: right; color: blue; margin-top: 20px;" >
+					<button onclick="event.preventDefault(); copyToClipboard('#textLinkShare') "class="shadowt">Sao chép</button>
+				</span>
+			</div>
+		</div>
+	</form>
+</div>
+<!-- /MODAL SHARE -->
+
+<!-- MODAL UPLOAD -->
+<div id="upload-modal" class="modal">
+
+	<form class="modal-content animate upload-Files" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">TẢI LÊN DỮ LIỆU</h3>
+			<span onclick="document.getElementById('upload-modal').style.display='none'" class="close shadow" title="Đóng">&times;</span>
+		</div>	
+
+		<div class="modal-body">
+			Tải lên tệp: <input type="file" multiple required name="file_upload" style="width: 100%;">
+			Tải lên thư mục: <input type="file" name="folder_upload" style="width: 100%;" webkitdirectory mozdirectory msdirectory odirectory directory />
+		</div>			
+		
+		<div class="modal-footer">
+			<button style="width: 100% " class="btn btn-success shadow" type="submit">Tải lên</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL UPLOAD -->
+
+<!-- MODAL RENAME -->
+<div id="rename-modal" class="modal">
+
+	<form class="modal-content animate rename-file-folder" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">ĐỔI TÊN</h3>	
+			<span onclick="document.getElementById('rename-modal').style.display='none'" class="close shadow" title="Đóng">&times;</span>
+		</div>
+
+		<div class="modal-body">
+			<label for="newName" style=" font-weight: 600; font-size: medium; width: 30%;">Tên mới: </label>
+			<input id="newName" style="width: 65%;" type="text" placeholder="Nhập vào tên mới" name="newName" required>
+		</div>	
+		
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow" type="submit" >Lưu</button>	
+			<button onclick="document.getElementById('rename-modal').style.display='none'" class="btn cancelbtn shadow">Huỷ</button>	
+		</div>
+		
+	</form>
+</div>
+<!-- /MODAL RENAME -->
+
+<!-- MODAL CREATE FOLDER -->
+<div id="create-folder-modal" class="modal">
+	<form class="modal-content animate create-folder" method="post" enctype="multipart/form-data">
+		
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title"> THƯ MỤC MỚI</h3>
+			<span onclick="document.getElementById('create-folder-modal').style.display='none'" class="close shadow" title="Đóng">&times;</span>
+		</div>	
+
+		<div class="modal-body">
+			<input type="text" placeholder="Nhập vào tên thư mục" name="nameFolder" required>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow" >Tạo</button>	
+			<button onclick="document.getElementById('create-folder-modal').style.display='none'" class="btn cancelbtn shadow">Huỷ</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL CREATE FOLDER -->
+
+<!-- MODAL lOCAL ACCOUNT DETAIL -->
+<div id="detailAccountCloud" class="modal">
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header">
+			<h3 style="text-align: center;" class="tmodal modal-title">	<i class="fa fa-users"></i> TÀI KHOẢN CỦA TÔI</h3>
+			<span onclick="document.getElementById('detailAccountCloud').style.display='none'" class="close shadow" title="Đóng">&times;</span>	
+		</div>
+		<div class="modal-body">
+			<table style=" border: 0; margin-left: 10%;">
+				<tr >
+					<td class="td-id " style="width: 45%" >Email </td>
+					<td class="td-name" id="local_acccount_email"><%= user.local.email %></td>
+				</tr>
+				<tr>
+					<td class="td-id"style="width: 45%" >Tên </td>
+					<td class="td-name" id="local_acccount_name"><%= user.local.name %></td>
+				</tr>
+				<tr> 
+					<td class="td-id"style="width: 40%">Số điện thoại </td>
+					<td class="td-name" id="local_acccount_phoneNumber"><%= user.local.phoneNumber %></td>
+				</tr>
+			</table>
+		</div>	
+
+		<div class="modal-footer">
+			<button type="button" onclick="event.preventDefault(); document.getElementById('edit-profileAccount-modal').style.display='block'" class="btn btn-success shadowBtn" style="min-width: 80px;">Chỉnh sửa</button>
+			<button type="button" onclick=" document.getElementById('detailAccountCloud').style.display='none'" class="btn cancelbtn shadow">Huỷ</button>
+		</div>
+	</form>
+</div>
+<!-- /MODAL TYPE CLOUD DETAIL -->
+
+<!-- CUSTOMER PROFILE ACCOUNT MODAL -->
+<div id="edit-profileAccount-modal" class="modal">
+	<form class=" modal-content sky-form boxed animate" action="/dashboard/editProfileLocalAccount" method="post" enctype="multipart/form-data">
+		<header>
+			<h3 style="text-align: center;" class="tmodal" ><i class="fa fa-users"></i> CHỈNH SỬA TÀI KHOẢN</h3>
+			<span onclick="document.getElementById('edit-profileAccount-modal').style.display='none'" class="close margin-top-20" title="Đóng">&times;</span>
+		</header>
+	
+		<fieldset>					
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-envelope"></i>
+				<input type="text" name="email" value= <%= user.local.email %>>
+			</label>
+		
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-envelope"></i>
+				<input type="text" name="name" value=<%= user.local.name %>>
+			</label>
+
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-lock"></i>
+				<input type="password" name="newPassword" placeholder="Nhập vào mật khẩu mới" >
+				<b class="tooltip tooltip-bottom-right">Phải là các con số hoặc ký tự latin</b>
+			</label>
+	
+			<label class="input margin-bottom-10">
+				<i class="ico-append fa fa-lock"></i>
+				<input type="password" name="passwordConfirm" placeholder="Nhập lại mật khẩu mới" >
+				<b class="tooltip tooltip-bottom-right">Phải là các con số hoặc ký tự latin</b>
+			</label>
+
+			<label class="input margin-bottom-10">
+				<input type="text" id="#" name="phoneNumber" value=<%= user.local.phoneNumber %>>
+				<b class="tooltip tooltip-bottom-right">Phải là các con số</b>
+			</label>
+	
+		</fieldset>
+	
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success shadowBtn" >Lưu</button>	
+			<button type="button" onclick="document.getElementById('edit-profileAccount-modal').style.display='none'" class="btn cancelbtn shadow">Huỷ</button>	
+		</div>
+	
+	</form>
+</div>
+<!-- /CUSTOMER PROFILE ACCOUNT MODAL -->
+
+<!-- MODAL CLOUD TYPE -->
+<div id="idtype" class="modal">
+	<form class="modal-content animate" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h4 style="text-align: center;" class="modal-title">CHỌN LOẠI TÀi KHOẢN ĐÁM MÂY</h4>	
+			<span onclick="document.getElementById('idtype').style.display='none'" class="close" title="Đóng">&times;</span>
+		</div>
+
+		<div style=" margin-left: auto; margin-right: auto;">
+			<div class="gallery shadow">
+				<a href="/auth/dropbox" >
+					<img class="img-responsive" src="assets/images/logo/dropbox.png" alt="Dropbox">
+				</a>
+				<h3 class="desc">Dropbox</h3>
+			</div>
+			
+			<div class="gallery shadow">
+				<a href="/auth/google">
+					<img class="img-responsive" src="assets/images/logo/googledrive.jpg" alt="google drive" >
+				</a>
+				<h3 class="desc">Google Drive</h3>
+			</div>
+			
+			<div class="gallery shadow">
+				<a href="/auth/onedrive">
+					<img class="img-responsive" src="assets/images/logo/onedrive.png" alt="One drive">
+				</a>
+				<h3 class="desc">OneDrive</h3>
+			</div>
+		</div>	
+	</form>
+</div>
+<!-- /MODAL CLOUD TYPE -->
+
+<!-- MODAL FILE DETAIL -->
+<div id="iddetail" class="modal">
+
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	CHI TIẾT TỆP</h3> 
+			<span onclick="document.getElementById('iddetail').style.display='none'" class="close shadow" title="Đóng">&times;</span>	
+		</div>
+
+		<div style="background-color:#f1f1f1; width: 100%; text-align: left;">
+			<h4 class="desc-left" id="file_name"></h4> 
+		</div>	
+		<table style=" border: 0; margin-left: 20%;">
+			<tr >
+				<td class="td-id " >Loại đám mây</td>
+				<td class="td-name" id="file_cloud_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Loại tệp</td>
+				<td class="td-name" id="file_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Kích thước tệp</td>
+				<td class="td-name" id="file_size"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Lưu tại</td>
+				<td class="td-name" id="file_location"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Ngày tạo</td>
+				<td class="td-name" id="file_create_date"></td>
+			</tr>
+			<tr>
+				<td class="td-id">Ngày thay đổi</td>
+				<td class="td-name" id="file_modified_date"></td>
+			</tr>
+		</table>
+		<div>
+			<button type="button" onclick="document.getElementById('iddetail').style.display='none'" class="btn cancelbtn shadow">Đóng</button>
+		</div>
+	</form>
+	
+</div>
+<!-- /MODAL FILE DETAIL -->
+
+<!-- MODAL CLOUD TYPE DETAIL -->
+<div id="idcloudtype" class="modal">
+	<form class="modal-content animate" action="#" method="post" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	CHI TIẾT TÀI KHOẢN</h3>
+			<span onclick="document.getElementById('idcloudtype').style.display='none'" class="close shadow" title="Đóng">&times;</span>	
+		</div>
+		
+		<div style="background-color:#f1f1f1; width: 100%; text-align: left; padding-left: 10px;">
+			<h4 class="desc-left margin-left-50" id="cloud_email">Email tài khoản</h4>
+		</div>	
+		<table style=" border: 0; margin-left: 15%;">
+			<tr >
+				<td class="td-id " style="width: 40%" >Loại đám mây </td>
+				<td class="td-name" id="cloud_type"></td>
+			</tr>
+			<tr>
+				<td class="td-id" style="width: 40%">Tổng dung lượng </td>
+				<td class="td-name" id="cloud_total_space"></td>
+			</tr>
+			<tr>
+				<td class="td-id" style="width: 40%">Dung lượng đã dùng</td>
+				<td class="td-name" id="cloud_used_space"></td>
+			</tr>
+		</table>
+		<div>
+			<button type="button" onclick="document.getElementById('idcloudtype').style.display='none'" class="btn cancelbtn shadow">Đóng</button>
+		</div>
+	</form>
+	
+</div>
+<!-- /MODAL TYPE CLOUD DETAIL -->
+
+<!-- MODAL MOVE -->
+<div id="listFolderMoveTo" class="modal">
+
+	<form class="modal-content animate moveToNewLocation" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	DI CHUYỂN TỆP</h3>	
+			<span onclick="document.getElementById('listFolderMoveTo').style.display='none'" class="close" title="Đóng">&times;</span>		
+		</div>
+
+		<div class="modal-body" style="padding-bottom: 20px; ">
+				<label style="width: 35%;" for="fname">Chọn tài khoản chuyển đến:</label>
+				<select style="width: 40%;" id="chooseAccountMoveTo" style="float: right; ">
+				<optgroup label="Google">
+					<% if (user.google.length > 0) { %>          
+						<% for(var i = 0; i < user.google.length; i++) { %>
+							<option class="google-drive" value="<%= user.google[i]._id %>"><%= user.google[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				<optgroup label="OneDrive">
+					<% if (user.onedrive.length > 0) { %>          
+						<% for(var i = 0; i < user.onedrive.length; i++) { %>
+							<option class="onedrive" value="<%= user.onedrive[i]._id %>"><%= user.onedrive[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				<optgroup label="Dropbox">
+					<% if (user.dropbox.length > 0) { %>          
+						<% for(var i = 0; i < user.dropbox.length; i++) { %>
+							<option class="dropbox" value="<%= user.dropbox[i]._id %>"><%= user.dropbox[i].email %></option>
+						<% } %>
+					<% } %>
+				</optgroup>
+				</select>
+			<h2 id="currentFolderMove" style="position: relative; text-align: center; background-color:#f1f1f1;" class="tmodal">
+			</h2>
+			<a id="backDirectoryBeforeMove" href="#" style="position:absolute; left:0;" class="fa fa-arrow-left" aria-hidden="true"></a>
+			<div id="allFolderMoveTo" class="file-folder-container-mini"></div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow" >Chuyển</button>	
+			<button onclick="document.getElementById('listFolderMoveTo').style.display='none'" class="btn cancelbtn shadow" type="button">Huỷ</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL MOVE -->	
+
+<!-- MODAL COPY -->
+<div id="listFolderCopyTo" class="modal">
+
+	<form class="modal-content animate copyToNewLocation" method="get" enctype="multipart/form-data">
+		<div class="modal-header" >
+			<h3 style="text-align: center;" class="modal-title">	SAO CHÉP TỆP</h3>	
+			<span onclick="document.getElementById('listFolderCopyTo').style.display='none'" class="close" title="Đóng">&times;</span>		
+		</div>
+
+		<div class="modal-body" style="padding-bottom: 20px; ">
+			<label style="width: 35%;" for="fname">Chọn tài khoản sao chép đến:</label>
+			<select style="width: 40%;" id="chooseAccountCopyTo" style="float: right; ">
+			<optgroup label="Google">
+				<% if (user.google.length > 0) { %>          
+					<% for(var i = 0; i < user.google.length; i++) { %>
+						<option class="google-drive" value="<%= user.google[i]._id %>"><%= user.google[i].email %></option>
+					<% } %>
+				<% } %>
+			</optgroup>
+			<optgroup label="OneDrive">
+				<% if (user.onedrive.length > 0) { %>          
+					<% for(var i = 0; i < user.onedrive.length; i++) { %>
+						<option class="onedrive" value="<%= user.onedrive[i]._id %>"><%= user.onedrive[i].email %></option>
+					<% } %>
+				<% } %>
+			</optgroup>
+			<optgroup label="Dropbox">
+			</optgroup>
+			</select>
+			
+			<h2 id="currentFolderCopy" style="position: relative; text-align: center; background-color:#f1f1f1;" class="tmodal">
+			</h2>
+			<a id="backDirectoryBeforeCopy" href="#" style="position:absolute; left:0;" class="fa fa-arrow-left" aria-hidden="true"></a>
+			<div id="allFolderCopyTo"  class="file-folder-container-mini"></div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-success okbtn shadow">Sao chép</button>	
+			<button onclick="document.getElementById('listFolderCopyTo').style.display='none'" class="btn cancelbtn shadow" type="button">Huỷ</button>	
+		</div>
+	</form>
+</div>
+<!-- /MODAL COPY -->	

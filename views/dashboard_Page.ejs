@@ -1,0 +1,300 @@
+<% include dashboard_master %>
+
+<body class="smoothscroll enable-animation m-20" style="font-family: Lucida Sans Unicode; font-weight: 600; " >
+	<% include dashboard_header %>
+	<!-- wrapper -->
+	<div style="margin-top: 30px;">
+		<section style="padding: 80px 0 20px">
+			<% if (messages) { %> 
+				<% if (messages.success) { %>
+					<!-- <div class="flash success alert alert-success"><%= messages.success %></div> -->
+					<script>
+						toastr.success('<%= messages.success %>', '')
+					</script>
+				<% } else if (messages.fail) { %>
+					<!-- <div class="flash error alert alert-danger"><%= messages.fail %></div> -->
+					<script>
+						toastr.error('<%= messages.fail %>', '')
+					</script>
+				<% } %>
+			<% } %>
+			<div class="row">
+				<!-- RIGHT -->
+			<div class="col-lg-9 col-md-9 col-sm-9 col-lg-push-3 col-md-push-3 col-sm-push-2 ">
+					<div class="mb-10" style="height:40px; border-bottom: solid 1px #ffded5;" >
+						<!-- <div class="pull-left">
+							<ol class="breadcrumb" style="background-color: white; margin-bottom: 0;">
+								<li class="breadcrumb-item"><a href="/dashboard">Dashboard</a> > </li>
+							</ol>
+						</div> -->
+						<!-- Phân loại và chế độ xem-->
+						<div class="pull-right shadowElement" style=" margin-bottom: 10px; height: auto;">
+							<select id="category_select">
+								<option value="All">Phân loại</option>
+								<option value="Image">Hình ảnh</option>
+								<option value="Video">Video</option>
+								<option value="Audio">Âm thanh</option>
+								<option value="Document">Tài liệu</option>
+								<option value="Compressed_archive">Tài liệu nén</option><!-- file nén-->
+								<option value="Binary_file">Tệp Binary</option>
+								<option value="Unknown_file">Tệp không xác định</option>
+							</select>
+						</div>
+						<!-- /Phân loại và chế độ xem-->
+						
+						<!--+ Lọc nâng cao -->
+						<div class="dropdownFilt" style="font-family: 'Open Sans',Arial,Helvetica,sans-serif;">
+	
+							<button onclick="document.getElementById('filt').style.display='block'" class="dropbtnFilt shadowElement">Tìm kiếm nâng cao +</button>
+							<div id="filt" class="dropdown-content"style="display:none;">
+								<form action="/dashboard/advancedFiltering" class="form-container" method="get">
+									<label>Bạn cần tìm:</label>
+									<input type="text"  
+										<% if (filter) { %>
+											<% if (filter.startDate) { %>
+												value="<%= filter.searchName %>"
+											<% } %>
+										<% } %>
+										style="background-color: #f5fcff!important;"name="searchName" class="form-control" placeholder="Nhập tệp cần tìm ...">
+									<label>Ngày tạo từ :</label>
+									<input type="datetime-local" id="startDate"
+										name="startDate" 
+										<% if (filter) { %>
+											<% if (filter.startDate) { %>
+												value="<%= filter.startDate %>"
+											<% } %>
+										<% } %>
+										min="1970-01-01T00:00" max="2050-01-01T00:00"
+										pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+									<label> Đến ngày:</label>
+									<input type="datetime-local" id="endDate" value=""
+										name="endDate"
+										<% if (filter) { %>
+											<% if (filter.startDate) { %>
+												value="<%= filter.endDate %>"
+											<% } %>
+										<% } %>
+										min="1970-01-01T00:00" max="2050-01-01T00:00"
+										pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+
+									<!-- Phân loại và chế độ xem-->
+									<div style=" margin-bottom: 10px; height: auto;">
+										<label> Phân loại tệp và thư mục: </label>
+										<select name="categoryFilter" id="category_filter">
+											<option value="All">Phân loại</option>
+											<option value="Folder">Thư mục</option>
+											<option value="Image">Hình ảnh</option>
+											<option value="Video">Video</option>
+											<option value="Audio">Âm thanh</option>
+											<option value="Document">Tài liệu</option>
+											<option value="Compressed_archive">Tệp nén</option><!-- file nén-->
+											<option value="Binary_file">Tệp Binary</option>
+											<option value="Unknown_file">Tệp không xác định</option>
+										</select>
+									</div>
+
+									<!-- sort -->
+									<label>Sắp xếp tệp: </label>
+									<div>
+									<input type="radio" id="none" name="sortByName" value="none" checked="checked">
+									<label for="None">Không sắp xếp</label>
+									</div><div>
+									<input type="radio" id="asc" name="sortByName" value="asc" >
+									<label for="ASC">ASC</label>&emsp;
+									
+									<input type="radio" id="desc" name="sortByName" value="desc">
+									<label for="DESC">DESC</label>
+									<hr>
+									</div>
+									<!-- filter account -->
+									<div>
+										<label class="pull-left" for="fname">Tài khoản hiển thị:</label>
+									</div><div>
+										<select class="pull-left" name="accountFilter" id="chooseAccountfilter"  style="width: 100%;" multiple>
+									<optgroup label="Google">
+										<% if (user.google.length > 0) { %>          
+											<% for(var i = 0; i < user.google.length; i++) { %>
+												<option class="google-drive" value="<%= user.google[i]._id %>"><%= user.google[i].email %></option>
+											<% } %>
+										<% } %>
+									</optgroup>
+									<optgroup label="OneDrive">
+										<% if (user.onedrive.length > 0) { %>          
+											<% for(var i = 0; i < user.onedrive.length; i++) { %>
+												<option class="onedrive" value="<%= user.onedrive[i]._id %>"><%= user.onedrive[i].email %></option>
+											<% } %>
+										<% } %>
+									</optgroup>
+									<optgroup label="Dropbox">
+										<% if (user.dropbox.length > 0) { %>          
+											<% for(var i = 0; i < user.dropbox.length; i++) { %>
+												<option class="dropbox" value="<%= user.dropbox[i]._id %>"><%= user.dropbox[i].email %></option>
+											<% } %>
+										<% } %>
+									</optgroup>
+										</select>
+									</div>
+									
+									
+			
+									<!-- /Phân loại và chế độ xem-->
+									<div class="modal-footer">
+										<button class="btn btn-success shadow pull-right" type="submit">Tìm kiếm</button>	
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				<div class="file-folder-container">
+					<!-- FOLDER -->
+					<div class="text-center">
+						
+					<!--Loading here<div class="spinner-border"></div>-->
+					<% if (listFile.length > 0 ) { %>
+						<% var flag = false %>
+						<% listFile.forEach(file => { %>
+							<% if ((file.type == "application/vnd.google-apps.folder" || file.type == "folder") && !flag ) {%>
+								<h2 class="align-items-center text-color" style="font-weight: 700;"><span class="fa fa-folder"></span> Thư mục</h2>
+								<% flag = true %>
+							<% } %>
+						<% })  %>
+						<div class="folder-block-wrapper d-flex justify-content-between" >
+							<div class="folder-wrapper d-flex flex-wrap" style="margin: auto;">
+									<% listFile.forEach(file => { %>
+										<% if (file.type == "application/vnd.google-apps.folder" || file.type == "folder" ) {%>
+											
+											<div class="col-12 col-sm-4 col-xl-3 p-0">
+												<a style="text-decoration: none;" class="linkFolder" href="dashboard/<%= file.driveType %>/getFileOfFolder/<%= file._id ? file._id : file.id %>/<%= file.driveID[0] %>/<%= encodeURIComponent(file.listTokenCloud[0])%>/<%= encodeURIComponent(file.listRefreshTokenCloud[0])%>/true">
+													<div id="<%= file._id ? file._id : file.id %>" class="shadowElement folder-block d-flex align-items-center mb-4 mx-auto">
+														<div id= "<%= file.name %>" class="d-flex align-items-center w-100 folder-name">
+															<i class="fa fa-folder"></i> &nbsp;
+															<p class="text-truncate col-12 m-0 p-0 text-left" ><%= file.name %></p>
+														</div>
+													</div>
+												</a> 
+											</div>
+											
+										<% } %>
+									<% })  %>
+							</div>
+						</div>
+						<% var flag = false %>
+						<% listFile.forEach(file => { %>
+							<% if ((file.type == "application/vnd.google-apps.folder" || file.type == "folder") && !flag ) {%>
+								<hr>
+								<% flag = true %>
+							<% } %>
+						<% })  %>
+					<% }%>
+					</div>
+					<!-- FILE -->
+					<div class="text-center">
+						<% var flag = false %>
+						<% listFile.forEach(file => { %>
+							<% if (file.type != "application/vnd.google-apps.folder" && file.type != "folder" && !flag ) {%>
+								<h2 style="font-weight: 700;"><span class="fa fa-file"></span> Tệp</h2>
+								<% flag = true %>
+							<% } %>
+						<% })  %>
+						<div id="all-file-wrapper" class="d-flex flex-wrap">
+							<% if (listFile.length > 0) { %>
+								<% listFile.forEach(file => { %>
+									<% if (file.type != "application/vnd.google-apps.folder" && file.type != "folder") {%>
+										
+										<% var image_cate =""; %>
+										<% var classThumbnail =""; %>
+										<% if (file.thumbnailLink != "") {%>
+											<% image_cate = file.thumbnailLink; %>
+											<% classThumbnail = "preview-file-block" %>  
+										<% } else { %>
+											<% image_cate = "assets/images/category_icon/" + file.icon; %>
+											<% classThumbnail = "custom-icon-file" %>  
+										<% } %>
+										<!--<% var categorySearch =""; %>
+
+										<% if (file.category == "Image" || file.category == "Google Photo") {%>
+											<% categorySearch ="Image"; %>
+										<% } else if (file.category == "Video" || file.category == "Google Video") {%>
+											<% categorySearch ="Video"; %>
+										<% } else if (file.category == "Audio" || file.category == "Google Audio") {%>
+											<% categorySearch ="Audio"; %>
+										<% } else if (file.category == "Compressed archive") {%>
+											<% categorySearch ="Compressed_archive"; %>
+										<% } else if (file.category == "Binary file") {%>	
+											<% categorySearch ="Binary_file"; %>
+										<% } else if (file.category == "Unknown file") {%>
+											<% categorySearch ="Unknown_file"; %>
+										<% } else categorySearch ="Document" %>	
+										-->
+										<!--<div class="<%= categorySearch %> col-12 col-lg-6 col-xl-3 d-flex justify-content-center mt-20">											
+										-->	<div class="<%= file.categoryLarge %> col-12 col-lg-6 col-xl-3 d-flex justify-content-center mt-20">
+											<a style="text-decoration: none;" class="linkFile" href="<%= file.webUrl ? file.webUrl : file.webViewLink %>">
+												<div id="<%= file._id ? file._id : file.id %>" style="border: 1px solid #ffded5; background-image: url('<%= image_cate %>')" class="<%= classThumbnail %> file-block shadow" >
+													<div tabindex="<%= file._id ? file._id : file.id %>" class="d-flex align-items-center w-100p file-info-block">
+														<img class="col-2 p-0 mr-2 " src="assets/images/category_icon/<%= file.icon %>">
+														<p class="text-truncate col-10 m-0 p-0"> <%= file.name %> </p>
+													</div>
+												</div>
+											</a>  
+										</div>  
+															
+									<% } %>
+								<% })  %>
+							<% } %>
+						</div>
+					</div>
+					<!-- Rightclick FILE-->
+					<div class="context-menu" id="file-context-menu" style="display:none;position:absolute;z-index:99">
+						<ul>
+							<li><a id="detail" onclick="document.getElementById('iddetail').style.display='block'" style="width:auto;"><i class="fa fa-info-circle"></i> Chi tiết</a></li> 
+							<li><a id="share"><i class="fa fa-share-alt"></i> Chia sẻ</a></li>
+							<li><a id="download"><i class="fa fa-download"></i> Tải xuống</a></li>          
+							<li><a id="delete"><i class="fa fa-trash"></i> Xoá</a></li>   
+							<li><a id="moveTo"><i class="fa fa-share"></i> Di chuyển</a></li>  
+							<li><a id="copyTo"><i class="fa fa-share fa-copy"></i> Sao chép</a></li>  
+							<li><a id="duplicate"><i class="fa fa-files-o"></i> Nhân đôi</a></li>   
+							<li><a id="rename" style="width:auto;" ><i class="fa fa-exchange"></i> Đổi tên</a></li>
+									
+						</ul>
+					</div>
+					<!-- /Rightclick FILE-->
+
+					<!-- Rightclick FOLDER-->
+					<div class="context-menu" id="folder-context-menu" style="display:none;position:absolute;z-index:99">
+						<ul>
+							<li><a id="detail" onclick="document.getElementById('iddetail').style.display='block'" style="width:auto;"><i class="fa fa-info-circle"></i> Chi tiết</a></li> 
+							<li><a id="upload"style="width:auto;"><i class="fa fa-upload"></i> Tải lên</a></li> 
+							<li><a id="createFolder"style="width:auto;"><i class="fa fa-plus"></i> Thư mục mới</a></li> 
+							<li><a id="share"><i class="fa fa-share-alt"></i> Chia sẻ</a></li> 
+							<li><a id="download"><i class="fa fa-download"></i> Tải xuống</a></li>        
+							<li><a id="delete"><i class="fa fa-trash"></i> Xoá</a></li>       
+							<li><a id="moveTo"><i class="fa fa-share"></i> Di chuyển</a></li>  
+							<li><a id="copyTo"><i class="fa fa-copy"></i> Sao chép</a></li>
+							<li><a id="rename" style="width:auto;" ><i class="fa fa-exchange"></i> Đổi tên</a></li>         
+						</ul>
+					</div>
+					<!-- /Rightclick FOLDER-->
+				</div>
+			</div>
+				<!--/RIGHT-->
+
+				<% include dashboard_left_menu %>
+
+			</div>
+		</section>
+			<!-- / -->
+
+		</div>
+		<!-- /wrapper -->
+		<% include dashboard_modal %>
+		<% include dashboard_js %>
+		
+
+		<!-- PAGE LEVEL SCRIPTS -->
+		<!-- <script type="text/javascript">
+			_toastr("Welcome, I am a notification","top-right","info",false);
+		</script> -->
+		<!-- <script type="text/javascript" src="assets/plugins/toastr/toastr.js"></script> -->
+</body>
+</html>

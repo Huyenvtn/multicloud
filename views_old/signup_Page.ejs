@@ -1,0 +1,145 @@
+<% include master %>
+<% include header %>
+<section class="page-header">
+				<div class="container">
+
+					<h1>REGISTER</h1>
+
+					<!-- breadcrumbs -->
+					<ol class="breadcrumb">
+						<li><a href="#">Home</a></li>
+						<li><a href="#">Pages</a></li>
+						<li class="active">Register</li>
+					</ol><!-- /breadcrumbs -->
+
+				</div>
+			</section>
+			<!-- /PAGE HEADER -->
+
+
+
+
+			<!-- -->
+			<section>
+				<div class="container">
+					
+					<div class="row">
+
+						<!-- LOGIN -->
+						<div class="col-md-6 col-sm-6">
+
+							<!-- ALERT -->
+							<!--
+							<div class="alert alert-mini alert-danger margin-bottom-30">
+								<strong>Oh snap!</strong> Login Incorrect!
+							</div>
+							-->
+							<!-- /ALERT -->
+
+							<!-- register form -->
+							<form class="nomargin sky-form boxed" action="#" method="post">
+								<header>
+									<i class="fa fa-users"></i> Register
+									</header>
+
+								<fieldset class="nomargin">					
+									<label class="input margin-bottom-10">
+										<i class="ico-append fa fa-envelope"></i>
+										<input type="text" name="email" placeholder="Email address">
+										<b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+									</label>
+								
+									<label class="input margin-bottom-10">
+										<i class="ico-append fa fa-lock"></i>
+										<input type="password" name="password" placeholder="Password">
+										<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+									</label>
+								
+									<label class="input margin-bottom-10">
+										<i class="ico-append fa fa-lock"></i>
+										<input type="password" name="passwordConfirm" placeholder="Confirm password">
+										<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+									</label>
+									<label class="input margin-bottom-10">
+										<input type="text" name="phoneNumber" placeholder="Phone number">
+										<b class="tooltip tooltip-bottom-right">Only latin characters</b>
+									</label>
+									
+									<label class="input margin-bottom-10">
+										<i class="ico-append fa fa-envelope"></i>
+										<input type="text" name="name" placeholder="Name">
+										<b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
+									</label>
+
+									<div class="margin-top-30">
+										<label class="checkbox nomargin"><input class="checked-agree" type="checkbox" name="checkbox">
+											<i></i>I agree to the <a href="#" data-toggle="modal" data-target="#termsModal">Terms of Service</a></label>
+									</div>
+								</fieldset>
+
+								<div class="row margin-bottom-20">
+									<div class="col-md-12">
+										<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> REGISTER</button>
+									</div>
+								</div>
+
+							</form>
+							<!-- /register form -->
+
+							<!-- ALERT -->
+							
+							<% if( message.length != 0 ) {%>
+								<div class="alert alert-mini alert-danger margin-bottom-30">
+									<strong>Oh snap!</strong> 
+									<% for (let i=0; i<message.length; i++) { %>
+										<li><%= message[i] %></li> 
+									<% } %>
+							<% } %>
+							
+							</div><!-- /ALERT -->
+
+						</div>
+						<!-- /LOGIN -->
+
+						<!-- SOCIAL LOGIN -->
+						<div class="col-md-6 col-sm-6">
+							<form action="#" method="post" class="sky-form boxed">
+
+								<header class="size-18 margin-bottom-20">
+									Register using your favourite social network
+								</header>
+								
+								<fieldset class="nomargin">
+
+									<div class="row">
+									
+										<div class="col-md-8 col-md-offset-2">
+											<a href="/auth/facebook" class="btn btn-block btn-social btn-facebook margin-bottom-10">
+												<i class="fa fa-facebook"></i> Sign in with Facebook
+											</a>
+
+											<a href="/auth/google" class="btn btn-block btn-social btn-google margin-bottom-10">
+												<i class="fa fa-google-plus"></i> Sign in with Google
+											</a>
+										</div>
+									</div>
+
+								</fieldset>
+
+								<footer>
+									Already have an account? <a href="page-login-1.html"><strong>Back to login!</strong></a>
+								</footer>
+
+							</form>
+
+						</div>
+						<!-- /SOCIAL LOGIN -->
+
+					</div>
+
+					
+				</div>
+			</section>
+			<!-- / -->
+
+<% include footer %>
